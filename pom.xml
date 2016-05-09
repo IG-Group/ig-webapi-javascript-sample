@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <name>IG Web API Javascript Client</name>
+   <description>IG Web API Javascript client library and sample application</description>
+   <packaging>pom</packaging>
+
+   <groupId>com.iggroup.webapi.samples</groupId>
+   <artifactId>ig-webapi-js</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+
+   <modules>
+      <module>lib</module>
+      <module>app</module>
+   </modules>
+
+</project>

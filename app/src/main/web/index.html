@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>IG Sample Application</title>
+
+    <meta http-equiv="Cache-control"  max-age=31556926>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/ui-lightness/jquery-ui-1.10.3.custom.css">
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+            font-family: Arial;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #555;
+            -webkit-font-smoothing:antialiased;margin:auto;
+        }
+
+        .main {
+            margin:0px auto;
+            max-width: 1200px;
+            min-width: 860px;
+        }
+
+        .container {
+            max-width: 1180px;
+        }
+
+        #positions_list {
+            width: 800px;
+        }
+
+        #search_results_list {
+            width: 800px;
+        }
+
+        .tickCell {
+            width: 80px;
+        }
+
+        .ticket-panel {
+            padding: 10px;
+        }
+
+        .ticket-buttons {
+            padding: 10px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .ticket-field {
+            padding: 10px;
+            margin-left: 90px;
+            width: 370px;
+            vertical-align: middle;
+        }
+
+        .ticket-field span {
+            width: 90px;
+            display: inline-block;
+        }
+
+        .glowing-border-off {
+            border: 7px solid #ffffff;
+            border-radius: 10px;
+        }
+
+        .glowing-border-on {
+            border: 7px solid #fbd850;
+            border-radius: 10px;
+        }
+
+        .screenreader {
+            border: 0px none;
+            clip: rect(0px, 0px, 0px, 0px);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0px;
+            position: absolute;
+            width: 1px;
+        }
+
+        .logo-link {
+            display: block;
+            height: 65px;
+            margin: 20px 0px 5px 15px;
+            width: 70px;
+        }
+
+        .button-green{color: #FFF;font-size:16px;padding:5px 15px 5px 15px;color:#fff;background-color:#78b23f}
+        .button-green:hover{background-color:#608e32}
+        .large-button-green{color: #FFF;font-size:16px;padding:8px 20px 8px 20px;color:#fff;background-color:#78b23f}
+        .large-button-green:hover{background-color:#608e32}
+
+    </style>
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div style="background-color:#C9171E">
+
+<div class="mainTitle">
+
+    <p style="float:left; margin:0px;">
+
+        <a class="logo-link" href="/">
+
+            <span class="screenreader">home</span>
+        </a>
+
+    </p>
+
+   <h1 class="mainHeading">
+
+       <div align="center" ></div>
+   </h1>
+
+</div>
+</div>
+
+<div class="main">
+
+<div class="navbar navbar-inverse" style="margin-bottom:0px;" >
+    <div style="background-image:url('/sites/all/themes/IG/images/sample-app-banner.png');background-color:grey;max-width:1200px;" >
+        <div class="container" style="padding:6px; " >
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div >
+                <form class="navbar-form pull-left" style="font-size:30pt;padding-top:0px;padding-left:20px;font-family: Arial;font-weight: bold; color:#fff">
+                    Sample application
+                </form>
+                <form class="navbar-form pull-right" style="padding-top:10px; padding-right:5px;" >
+                    <input title="IG client login name" class="span2" type="text" id="username" placeholder="Username" >
+                    <input title="IG client password" class="span2" type="password" id="password" placeholder="Password">
+                    <input title="Application key" class="span2" type="text" id="apikey" placeholder="API key">
+                    <input title="Login using IG client credentials" type="button" id="loginButton" class="button-green" value="Login"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="landing" style="padding:10px; background-color:white; ">
+    <br/>
+    <p>Discover how easy it is to code to our API with our sample web trading app.
+        With it you’ll be able to view markets and positions, and place basic trades.
+        To get started all you need is an IG demo account and API application key.
+        </p>
+
+    <br/>
+    <p>
+        Go to <a href="https://labs.ig.com">IG Labs</a> for information about
+        <ul><li>Creating an IG demo account</li>
+    <li>Web API guides</li>
+    <li>More sample apps</li></ul>
+    </p>
+
+    <p>
+    <form action="https://labs.ig.com" target="_blank">
+        <input class="large-button-green" type="submit" value="Open IG Labs"/>
+    </form>
+    <p/>
+
+</div>
+
+
+<div class="container-hidden" id="container" style="padding:10px ;background-color: white">
+
+    <div id="errorAlert" class="alert alert-block alert-error fade in hide">
+        <h4 class="alert-heading">Error encountered !</h4>
+        <p>
+            Status code: <span id="alertStatusCode"></span>
+        </p>
+        <p>
+            Error code: <span id="alertErrorCode"></span>
+        </p>
+        <a class="btn" id="erroralert-dismiss" href="#">Dismiss</a>
+    </div>
+
+    <div>
+        <p>Current Status: <strong><span style="color: red" id="loginStatus">Not logged in</span></strong></p>
+    </div>
+
+    <hr>
+
+    <div class="btn-group" data-toggle="buttons-checkbox">
+        <h4>Raw HTTP Traffic</h4>
+        <a class="btn collapse-data-btn" data-toggle="collapse" href="#details">Show HTTP Data</a>
+    </div>
+    <div id="details" class="collapse">
+        <p>Request</p>
+        <p><pre id="request_data"></pre></p>
+
+        <p>Response</p>
+        <p><pre id="response_data"></pre></p>
+    </div>
+
+    <hr>
+
+    <div>
+        <h4>Open Positions</h4>
+        <input type="button" id="positionsButton" value="Retrieve Positions"/>
+
+        <table id="positions_list" class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="30px">Status</th>
+                    <th>Market</th>
+                    <th>Expiry</th>
+                    <th>Size</th>
+                    <th>Bid</th>
+                    <th>Offer</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <div>
+        <h4>Search Markets</h4>
+        <input type="text" id="searchTerm"/>
+        <input type="button" id="searchButton" value="Search"/>
+
+        <table id="search_results_list" class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="30px">Status</th>
+                    <th>Market</th>
+                    <th>Expiry</th>
+                    <th>Bid</th>
+                    <th>Offer</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="modal fade" id="dealTicket" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="dealTicket_title" class="modal-title">Deal Ticket</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="ticket-panel">
+
+                        <input type="hidden" id="trade_direction" />
+                        <div class="ticket-buttons">
+                            <input type="hidden" id="trade_bid" />
+                            <button id="sell_button" class="btn btn-large btn-primary glowing-border-off" type="button">
+                                Sell <span id="ticket_sell_price">-</span>
+                            </button>
+
+                            &nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;
+
+                            <input type="hidden" id="trade_offer" />
+                            <button id="buy_button" class="btn btn-large btn-danger glowing-border-off" type="button">
+                                Buy <span id="ticket_buy_price">-</span>
+                            </button>
+                        </div>
+
+                        <div class="ticket-field">
+                            <input type="hidden" id="trade_epic" />
+                            <input type="hidden" id="trade_expiry" />
+                            <span class="ticket-field-label">Size</span> <input id="trade_size" type="text" value="1" />
+                        </div>
+
+                        <div class="ticket-field">
+                            <span class="ticket-field-label">Currency</span>
+                            <select id="trade_currency">
+                                <option value="GBP">GBP</option>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="place_trade_button" type="button" class="btn btn-success">Place Trade</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="dealInProgress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Deal in progress</h4>
+                </div>
+                <div class="modal-body">
+                    Deal Reference: <span id="dealReference"></span>
+                    <span class="ticket-field-label">
+                        Waiting for the deal confirmation
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="dealConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Deal confirmation</h4>
+                </div>
+                <div class="modal-body" id="dealConfirmMessage">
+                    Deal ID : <span id="dealId"></span>
+                    <br/>
+                    Status  : <span id="dealStatus"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+</div>
+
+</div>
+
+<div style="height:15px; background-color:#D6D2C4; padding: 20px; font-size:14px; line-height:18px; margin: 0px auto; position: fixed; bottom: 0; width: 100%;">
+    <div style="height:15px; background-color:#D6D2C4; padding: 0px; font-size:14px; line-height:18px;
+    max-width: 1100px;
+    min-width: 960px;  margin: 0px auto;">
+        <div class="footer-logo" itemtype="http://schema.org/Organization" itemscope="" style="float:left;">
+
+            <a href="http://www.ig.com/uk" itemprop="url">
+                <img width="20" alt="iglogo" src="http://www.ig.com/etc/designs/onedomain/1393492451000/images/schema_image.jpg" itemprop="logo"></img></a>
+
+        </div>
+        <p style="margin: 2px 0px 0px 30px; }"> © 2003-2014</p>
+    </div>
+</div>
+
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="assets/js/require.js"></script>
+<script src="assets/js/lightstreamer.js"></script>
+<script src="assets/js/ig-public-api.js"></script>
+<script src="assets/js/pidder.js"></script>
+<script src="assets/js/beautifier.js"></script>
+<script src="assets/js/bootstrap-transition.js"></script>
+<script src="assets/js/bootstrap-alert.js"></script>
+<script src="assets/js/bootstrap-modal.js"></script>
+<script src="assets/js/bootstrap-dropdown.js"></script>
+<script src="assets/js/bootstrap-scrollspy.js"></script>
+<script src="assets/js/bootstrap-tab.js"></script>
+<script src="assets/js/bootstrap-tooltip.js"></script>
+<script src="assets/js/bootstrap-popover.js"></script>
+<script src="assets/js/bootstrap-button.js"></script>
+<script src="assets/js/bootstrap-collapse.js"></script>
+<script src="assets/js/bootstrap-carousel.js"></script>
+<script src="assets/js/bootstrap-typeahead.js"></script>
+<script type="text/javascript" src="/sites/all/themes/IG/js/AppMeasurement.js"></script>
+
+
+<script>
+
+    jq(window).load(function() {
+
+        s.track();
+    });
+
+</script>
+
+
+</body>
+</html>
